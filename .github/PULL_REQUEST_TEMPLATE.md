@@ -1,0 +1,50 @@
+<!-- If this PR is not ready for review yet, please mark it as Draft. -->
+
+## Plugin
+
+<!-- The canonical id. The part after the "/" is the plugin's directory in this repo. -->
+
+- **Id:** `<author>/<plugin>`
+- [ ] New plugin
+- [ ] Update to an existing plugin (version bumped in `plugin.toml`)
+
+## What it does
+
+<!-- A short description, and what a user gets out of it. -->
+
+## External dependencies
+
+<!-- Any command or service the plugin shells out to, and why. List them in `dependencies` in plugin.toml too.
+     Write "None" if it is self-contained. -->
+
+## Testing
+
+<!-- How you exercised it: entries opened, IPC messages sent, settings toggled. -->
+
+- [ ] Tested on Niri
+- [ ] Tested on Hyprland
+- [ ] Tested on Sway
+- [ ] Tested on another compositor:
+- **Noctalia version tested against:** <!-- must be >= min_noctalia in plugin.toml -->
+
+## Screenshots / Videos
+
+<!-- Show the plugin running. Required for anything with a visual surface. -->
+
+## Checklist
+
+- [ ] The directory name matches the part of `id` after the `/` in `plugin.toml` exactly.
+- [ ] It ships `plugin.toml`, `README.md`, `thumbnail.webp`, and `translations/en.json`.
+- [ ] `version` follows semver and is bumped in this PR; `min_noctalia` is the version I tested against.
+- [ ] I only added or edited `translations/en.json` (no machine-translated locales).
+- [ ] I did not edit `catalog.toml`; CI generates it.
+- [ ] This PR touches exactly one plugin directory.
+
+## Code review attestation
+
+Plugins run as trusted, unsandboxed Luau in the user's session. Confirm:
+
+- [ ] The code is readable and not obfuscated, minified, or generated.
+- [ ] It does not download and execute remote code.
+- [ ] Every network call, filesystem write, and spawned process is something the description above accounts for.
+- [ ] I have the right to publish this code under the `license` declared in `plugin.toml`.

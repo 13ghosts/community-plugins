@@ -1,3 +1,5 @@
+-- Helper functions
+
 function tr(key)
     return noctalia.tr(key)
 end
@@ -48,7 +50,7 @@ local function labelBox(subtext, text, glyph)
     })
 end
 
-function statLabel(text, glyph: string?)
+local function statLabel(text, glyph: string?)
     local items = {}
     if glyph ~= nil then
         table.insert(items, ui.glyph({
@@ -72,7 +74,7 @@ end
 local function render()
     local firstBtn = btnCheck
 
-    if getState("isRunning") then
+    if getState("isRemoteCheckRunning") then
         firstBtn = ui.button({
             text = tr("panel.cancel"),
             glyph = "cancel",
@@ -100,7 +102,7 @@ local function render()
         end
     end
 
-    local lastCheckTimeStr = getState("lastCheckTimeStr")
+    local lastCheckTimeStr = getState("lastRemoteCheckTimeStr")
     local generationItems = {
         statLabel(`SYS: {getState("nixosGenerations")}`, "device-desktop"),
         statLabel(`{tr("panel.current")}: {getState("nixosCurrentGen")}`, "device-desktop-check")
@@ -200,15 +202,22 @@ local function render()
     )
 end
 
-watchState("isRunning", render)
-watchState("lastCheckTimeStr", render)
+-- State watcher
+watchState("isRemoteCheckRunning", render)
+watchState("lastRemoteCheckTimeStr", render)
 watchState("localHash", render)
 watchState("remoteHash", render)
 
+-- Hooks
 function onOpen(_ctx)
     render()
 end
 
+function update()
+    render()
+end
+
+-- Click handler
 function onCheckClicked()
     setState("command", "check")
 end

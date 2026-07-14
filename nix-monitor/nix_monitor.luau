@@ -33,8 +33,9 @@ function displayWidget(glyph: string, text: string, color: string?)
     end
 end
 
+-- Hooks
 function update()
-    if getState("isRunning") then
+    if getState("isRemoteCheckRunning") then
         displayWidget(barCfg("checking_glyph"), tr("bar.checking"), barCfg("checking_color"))
     else
         if getState("isUpdateAvailable") then

@@ -15,6 +15,17 @@ highlighting, animated line changes, and configurable online or local sources.
 Install `playerctl`, `python3`, `curl`, and `cp` on `PATH`. The active media
 player must expose MPRIS metadata for automatic track and playback detection.
 
+Noctalia installs the plugin files; it does not install system packages for you.
+To check or install the runtime packages automatically, run:
+
+```sh
+sh scripts/setup-deps.sh --check
+sh scripts/setup-deps.sh
+```
+
+Use `--yes` for unattended installs. The script supports `apt`, `dnf`,
+`pacman`, `zypper`, `apk`, and `xbps-install`.
+
 ## Usage
 
 Enable `h465855hgg/lyrics`, then add the `lyrics` bar widget in Noctalia's bar

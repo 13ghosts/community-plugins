@@ -151,3 +151,14 @@ icon = "car-fan"
 description = "Set the fan state on the ZenBook S 16 UM5606."
 min_noctalia = "5.0.0"
 tags = ["hardware"]
+
+[[plugin]]
+id = "rxtsel/portctl"
+name = "Portctl"
+version = "0.2.0"
+author = "Cristhian Melo"
+license = "MIT"
+icon = "plug"
+description = "Inspect and kill listening TCP/UDP ports."
+min_noctalia = "5.0.0"
+tags = ["network", "utility", "development", "indicator", "bar", "panel", "service"]

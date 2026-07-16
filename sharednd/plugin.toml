@@ -14,7 +14,7 @@
 id = "whyoolw/sharednd"
 name = "ShareDND"
 version = "1.1.1"
-min_noctalia = "5.0.0"
+plugin_api = 3
 author = "whyoolw"
 license = "MIT"
 dependencies = ["niri"]

@@ -147,8 +147,8 @@ Open a PR against `main`. CI validates your manifest, entry scripts, required fi
 - **One plugin per PR.**
 - The directory name matches the part of `id` after the `/` in `plugin.toml` **exactly**.
 - `version` is semver and gets bumped on every change to the plugin.
-- `min_noctalia` is the Noctalia version you actually tested against. Users on older builds are then told the plugin
-  needs an upgrade instead of getting a broken install.
+- `plugin_api` is the oldest Noctalia plugin API level the plugin requires. Use the current documented level for a new
+  plugin, and increase it only when the plugin adopts a capability from a newer API level.
 - `description` is concise catalog copy, limited to 120 characters. Put feature details in the plugin's README.
 - `license` is set in `plugin.toml`. You keep the copyright on your plugin; if it is not MIT, put a `LICENSE` file in
   your plugin directory. There is no repo-wide license covering contributed plugins.

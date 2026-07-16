@@ -1,7 +1,7 @@
 id = "thatonecalculator/um5606_fan_state"
 name = "ASUS UM5606 Fan State"
 version = "1.0.6"
-min_noctalia = "5.0.0"
+plugin_api = 3
 author = "ThatOneCalculator"
 license = "MIT"
 tags = ["hardware"]

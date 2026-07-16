@@ -1,7 +1,7 @@
 id           = "lux/ideapad-conservation-mode"
 name         = "IdeaPad Conservation Mode"
 version      = "0.3.0"
-min_noctalia = "5.0.0"
+plugin_api = 3
 author       = "lux"
 license      = "MIT"
 tags         = ["hardware", "shortcut", "system"]

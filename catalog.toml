@@ -188,7 +188,7 @@ tags = ["audio", "bar", "recording", "utility"]
 [[plugin]]
 id = "nightwatch75/file-search"
 name = "File Search"
-version = "0.0.9"
+version = "0.0.10"
 author = "nightwatch75"
 license = "MIT"
 icon = "search"

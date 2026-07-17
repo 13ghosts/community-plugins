@@ -26,3 +26,10 @@ default = [
     "YouTube|https://youtube.com",
     "Gmail|https://mail.google.com",
 ]
+
+[[setting]]
+key = "notify"
+type = "bool"
+label_key = "settings.notify.label"
+description_key = "settings.notify.description"
+default = true

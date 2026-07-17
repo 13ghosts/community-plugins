@@ -85,5 +85,7 @@ end
 
 function onActivate(id)
     noctalia.runAsync("xdg-open '" .. id .. "'")
-    noctalia.notify("Websites", "Opening " .. id)
+    if noctalia.getConfig("notify") then
+        noctalia.notify("Websites", "Opening " .. id)
+    end
 end

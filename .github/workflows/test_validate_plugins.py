@@ -148,6 +148,17 @@ class TranslationKeyTests(unittest.TestCase):
             with self.subTest(key=key):
                 self.assertFalse(validate_plugins.is_valid_translation_key(key))
 
+    def test_rejects_dotted_json_object_keys(self) -> None:
+        # A flat dotted key is what the i18n platform expands into nested objects; the JSON
+        # source must nest instead, so an object key with a dot is invalid.
+        self.assertFalse(validate_plugins.is_valid_key_segment("settings.label"))
+        self.assertTrue(validate_plugins.is_valid_key_segment("eyecare-active-duration"))
+        translations = {"settings.eyecare-active-duration.label": "Active Duration"}
+        self.assertEqual(
+            validate_plugins.invalid_translation_keys(translations),
+            ["settings.eyecare-active-duration.label"],
+        )
+
     def test_walks_nested_keys_and_reports_full_paths(self) -> None:
         translations = {
             "settings": {

@@ -68,11 +68,19 @@ ID_SEGMENT_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 RESERVED_NAMES = {"license", "readme", "index", "api", "admin", "static", "assets"}
 
 # The store flattens every plugin's translations under its id and rejects keys that are not
-# lowercase. A dotted key is a path of segments; each segment allows a-z, 0-9, dashes, and
-# underscores, but an underscore may not lead a segment. Uppercase (e.g. "zh-Hans") is out.
+# lowercase. A dotted label_key is a path of segments; each segment allows a-z, 0-9, dashes,
+# and underscores, but an underscore may not lead a segment. Uppercase (e.g. "zh-Hans") is out.
 TRANSLATION_KEY_SEGMENT_RE = re.compile(r"[a-z0-9-][a-z0-9_-]*")
+# Rule for a dotted path, as written in a manifest label_key/description_key.
 TRANSLATION_KEY_RULE = (
     "keys must be lowercase and contain only a-z, 0-9, dots, dashes, and non-leading underscores"
+)
+# Rule for a single object key inside translations/en.json. The dot is a path separator, so it
+# cannot appear inside a key: the i18n platform expands "a.b" into nested objects on the next
+# sync, and a flat dotted key would silently churn. Nest with objects instead.
+TRANSLATION_SEGMENT_RULE = (
+    "each translations/en.json key must be a single lowercase segment (a-z, 0-9, dashes, "
+    "non-leading underscores) with no dots; express nesting with objects, not dotted keys"
 )
 
 # Files every published plugin ships: the site renders the README as the plugin page and
@@ -362,20 +370,28 @@ def webp_dimensions(header: bytes) -> tuple[int, int] | None:
     return None
 
 
+def is_valid_key_segment(segment: str) -> bool:
+    """True if a single translation key segment is lowercase and dot-free."""
+    return TRANSLATION_KEY_SEGMENT_RE.fullmatch(segment) is not None
+
+
 def is_valid_translation_key(key: str) -> bool:
-    """True if a dotted translation key obeys the store's lowercase key rule."""
-    parts = key.split(".")
-    return all(TRANSLATION_KEY_SEGMENT_RE.fullmatch(part) for part in parts)
+    """True if a dotted label_key path obeys the store's lowercase key rule."""
+    return all(is_valid_key_segment(part) for part in key.split("."))
 
 
 def invalid_translation_keys(node: Any, prefix: str = "") -> list[str]:
-    """Return dotted paths in a translations tree whose own segment breaks the key rule."""
+    """Return dotted paths in a translations tree whose own object key breaks the segment rule.
+
+    Each object key must be one segment: a dot inside a key is rejected because the i18n
+    platform expands it into nested objects, so a flat "a.b" key is normalized away on sync.
+    """
     invalid: list[str] = []
     if not isinstance(node, dict):
         return invalid
     for key, value in node.items():
         path = f"{prefix}.{key}" if prefix else key
-        if not isinstance(key, str) or not is_valid_translation_key(key):
+        if not isinstance(key, str) or not is_valid_key_segment(key):
             invalid.append(path)
         invalid.extend(invalid_translation_keys(value, path))
     return invalid
@@ -996,7 +1012,7 @@ class Validator:
             path = plugin_dir / "translations" / "en.json"
             self.add_error(
                 path,
-                f"invalid translation key format: {', '.join(invalid)}; {TRANSLATION_KEY_RULE}",
+                f"invalid translation key format: {', '.join(invalid)}; {TRANSLATION_SEGMENT_RULE}",
             )
 
     def validate_required_files(self, manifest_path: Path, plugin_dir: Path) -> None:
